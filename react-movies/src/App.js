@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "./pages/homePage";
 import MoviePage from "./pages/movieDetailsPage";
 import MovieReviewPage from "./pages/movieReviewPage";
@@ -15,6 +15,10 @@ import WatchlistPage from "./pages/watchlistPage";
 import FavoriteActorPage from "./pages/favoriteActorPage";
 import TopMoviesPage from "./pages/topMoviesPage";
 import AddMovieReviewPage from './pages/addMovieReviewPage'
+import ProtectedRoutes from '../src/protectedRoutes'; // Import ProtectedRoutes
+import ProfilePage from "./pages/profilePage";
+import SignUpPage from "./pages/signUpPage";
+import LoginPage from "./pages/loginPage";
 
 
 // Create a custom theme using Material-UI's theme provider with a dark mode palette
@@ -24,13 +28,9 @@ const theme = createTheme({
   }
 });
 
-// https://mui.com/material-ui/customization/theming/
-// This link refers to Material-UI's documentation for customizing the theme.
-
 // The main App component that manages all routing and context providers
 const App = () => {
   return (
-    // Apply the custom theme across the app using the ThemeProvider
     <ThemeProvider theme={theme}>
       {/* BrowserRouter is the router that manages the navigation for the app */}
       <BrowserRouter>
@@ -45,36 +45,25 @@ const App = () => {
             <Routes>
               {/* Home page route */}
               <Route path="/" element={<HomePage />} />
-              
-              {/* Favorite movies route */}
-              <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
-              
-              {/* Movie review page route, accepts dynamic id parameter */}
-              <Route path="/reviews/:id" element={<MovieReviewPage />} />
-              
-              {/* Movie detail page route, accepts dynamic id parameter */}
-              <Route path="/movies/:id" element={<MoviePage />} />
-              
-              {/* Upcoming movies route */}
-              <Route path="/movies/upcoming" element={<UpcomingMovies />} />
-              
-              {/* Top-rated movies route */}
-              <Route path="/movies/toprated" element={<TopMoviesPage />} />
-              
-              {/* Watchlist page route */}
-              <Route path="/movies/watchlist" element={<WatchlistPage />} />
-              
-              {/* Actor list page route */}
-              <Route path="/actors" element={<ActorListPage />} />
-              
-              {/* Actor detail page route, accepts dynamic id parameter */}
-              <Route path="/actors/:id" element={<ActorDetailsPage />} />
-              
-              {/* Favorite actors page route */}
-              <Route path="/actors/favorites" element={<FavoriteActorPage />} />
-              <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
 
-              
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+
+              {/* Protected Routes wrapped with ProtectedRoutes */}
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+                <Route path="/reviews/:id" element={<MovieReviewPage />} />
+                <Route path="/movies/:id" element={<MoviePage />} />
+                <Route path="/movies/upcoming" element={<UpcomingMovies />} />
+                <Route path="/movies/toprated" element={<TopMoviesPage />} />
+                <Route path="/movies/watchlist" element={<WatchlistPage />} />
+                <Route path="/actors" element={<ActorListPage />} />
+                <Route path="/actors/:id" element={<ActorDetailsPage />} />
+                <Route path="/actors/favorites" element={<FavoriteActorPage />} />
+                <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+              </Route>
+
               {/* Catch-all route that redirects any unknown path to the home page */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
