@@ -233,22 +233,24 @@ export const searchActorsByName = (name) => {
 
 export const login = async (username, password) => {
   const response = await fetch('http://localhost:8080/api/users', {
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      method: 'post',
-      body: JSON.stringify({ username: username, password: password })
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ username, password })
   });
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const signup = async (username, password) => {
   const response = await fetch('http://localhost:8080/api/users?action=register', {
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      method: 'post',
-      body: JSON.stringify({ username: username, password: password })
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ username, password })
   });
-  return response.json();
+  const data = await response.json();
+  return data;
 };

@@ -5,34 +5,45 @@ export const AuthContext = createContext(null);
 
 const AuthContextProvider = (props) => {
   const existingToken = localStorage.getItem("token");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!existingToken);
   const [authToken, setAuthToken] = useState(existingToken);
   const [userName, setUserName] = useState("");
+  const [loginErr, setLoginErr] = useState(null);
+  const [authErr, setAuthErr] = useState(null);
 
-  //Function to put JWT token in local storage.
   const setToken = (data) => {
     localStorage.setItem("token", data);
     setAuthToken(data);
-  }
+  };
 
   const authenticate = async (username, password) => {
     const result = await login(username, password);
     if (result.token) {
-      setToken(result.token)
+      setToken(result.token);
       setIsAuthenticated(true);
       setUserName(username);
+    } else {
+      setLoginErr(result.msg);
     }
   };
 
   const register = async (username, password) => {
     const result = await signup(username, password);
-    console.log(result.code);
-    return (result.code == 201) ? true : false;
+    if (!result.success) {
+      setAuthErr(result.msg);
+      return false;
+    }
+    if (result.code === 201) {
+      return true;
+    }
   };
 
   const signout = () => {
-    setTimeout(() => setIsAuthenticated(false), 100);
-  }
+    setIsAuthenticated(false);
+    setAuthToken(null);
+    setUserName("");
+    localStorage.removeItem("token");
+  };
 
   return (
     <AuthContext.Provider
@@ -41,7 +52,10 @@ const AuthContextProvider = (props) => {
         authenticate,
         register,
         signout,
-        userName
+        userName,
+        authErr,
+        loginErr,
+        authToken
       }}
     >
       {props.children}
