@@ -12,7 +12,7 @@ const HomePage = () => {
 
   const { data, error, isLoading, isError } = useQuery(
     ["discover", page],
-    () => getMovies(page),
+    () => getMovies(["discover", page]),
     {
       keepPreviousData: true,
     }
@@ -73,5 +73,6 @@ const HomePage = () => {
     </>
   );
 };
-//https://mui.com/material-ui/react-pagination/ 
+
+
 export default HomePage;

@@ -1,22 +1,34 @@
-export const getMovies = (page = 1) => {
-  return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
+export const getMovies = async (args) => {
+  const [, idPart] = args;
+  const { page } = idPart;
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/movies?page=${page}`, {
+        headers: {
+          'Authorization': window.localStorage.getItem('token')
+        }
       }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch movies');
+    }
+
+    const data = await response.json();
+    return {
+      results: data.results || [],
+      total_pages: data.total_pages || 1,
+    };
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    throw error;
+  }
 };
 
-//Setting page = 1 as a default makes sure the function fetches the first page of results if no page number is given.
-// It keeps things simple and ensures pagination works smoothly when navigating through different pages.
+
+
+
 
 
 export const getMovie = (args) => {

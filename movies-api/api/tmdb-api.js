@@ -34,3 +34,32 @@ export const getGenres = async () => {
     throw error;  // Rethrow to propagate error to your route handler
   }
 };
+export const getMovies = (args) => {
+  const [, idPart] = args.queryKey;
+  const { page } = idPart;
+
+  return fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.json().message);
+    }
+    return response.json();
+  }).catch((error) => {
+     throw error
+  });
+};
+
+  
+export const getMovie = (id) => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
+  ).then(async (response) => {
+    if (!response.ok) {
+      throw new Error((await response.json()).message);
+    }
+    return response.json();
+  }).catch((error) => {
+    throw error;
+  });
+};

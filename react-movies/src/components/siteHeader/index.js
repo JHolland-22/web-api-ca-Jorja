@@ -26,7 +26,7 @@ const SiteHeader = () => {
   const navigate = useNavigate();
 
   const menuOptions = [
-    { label: "Home", path: "/home" },
+    { label: "Home", path: "/homepage" },
     { label: "Upcoming", path: "/movies/upcoming" },
     { label: "Latest", path: "/movies/latest" },
     { label: "Favorites", path: context.isAuthenticated ? "/movies/favorites" : "/login" },
