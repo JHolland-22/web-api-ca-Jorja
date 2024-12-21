@@ -26,27 +26,25 @@ export const getMovies = async (args) => {
   }
 };
 
-
-
-
-
-
-export const getMovie = (args) => {
+export const getMovie = async (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
-  ).then((response) => {
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/movies/${id}`, {
+        headers: {
+          'Authorization': window.localStorage.getItem('token')
+        }
+      }
+    );
     if (!response.ok) {
-      return response.json().then((error) => {
-        throw new Error(error.status_message || "Something went wrong");
-      });
+      throw new Error((await response.json()).message);
     }
     return response.json();
-  })
-  .catch((error) => {
+  } catch (error) {
     throw error;
-  });
+  }
 };
 
 export const getGenres = () => {
@@ -223,7 +221,6 @@ export const getTopMovies = (page = 1) => {
       throw error;
     });
 };
-
 
 export const searchActorsByName = (name) => {
   return fetch(

@@ -1,7 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import movieModel from './movieModel';
-import { getUpcomingMovies, getGenres } from '../tmdb-api';
+import { getUpcomingMovies, getGenres} from '../tmdb-api';
 
 const router = express.Router();
 
@@ -68,5 +68,8 @@ router.get('/tmdb/genres', asyncHandler(async (req, res) => {
         res.status(500).json({ success: false, msg: 'Failed to fetch genres' });
     }
 }));
+
+
+  
 
 export default router;
