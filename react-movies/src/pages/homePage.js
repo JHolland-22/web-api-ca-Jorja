@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 import { getMovies, getGenres } from "../api/tmdb-api";
 import PageTemplate from "../components/templateMovieListPage";
-import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 import Pagination from "@mui/material/Pagination";
@@ -11,12 +11,13 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
 
   const { data, error, isLoading, isError } = useQuery(
-    ["discover", page],
-    () => getMovies(["discover", page]),
+    ["discover", { page }],  // Pass page inside an object as part of an array
+    ({ queryKey }) => getMovies(queryKey), // Use queryKey for destructuring
     {
       keepPreviousData: true,
     }
   );
+  
 
   useEffect(() => {
     getGenres().then((response) => {
@@ -73,6 +74,5 @@ const HomePage = () => {
     </>
   );
 };
-
 
 export default HomePage;

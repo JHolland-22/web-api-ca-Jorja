@@ -35,11 +35,18 @@ export default function FilterMoviesCard(props) {
   };
   
   useEffect(() => {
-    getGenres().then((allGenres) => {
-      setGenres([genres[0], ...allGenres]);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    getGenres()
+      .then((allGenres) => {
+        if (Array.isArray(allGenres)) {
+          setGenres((prevGenres) => [prevGenres[0], ...allGenres]); // Functional update
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching genres:", error);
+      });
+  }, []);
+  
+  
 
   return (
     <Card 

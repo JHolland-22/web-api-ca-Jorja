@@ -19,21 +19,20 @@ export const getUpcomingMovies = async () => {
 
 export const getGenres = async () => {
   try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.TMDB_KEY}&language=en-US`
-    );
-
+    const response = await fetch('http://localhost:8080/tmdb/genres');
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to fetch genres');
+      throw new Error('Failed to fetch genres from the backend');
     }
-
-    const data = await response.json();
-    return data.genres;  // Only return the genres part
+    const genres = await response.json();
+    return genres;
   } catch (error) {
-    throw error;  // Rethrow to propagate error to your route handler
+    console.error('Error fetching genres:', error);
+    throw error;
   }
 };
+
+
+
 export const getMovies = (args) => {
   const [, idPart] = args.queryKey;
   const { page } = idPart;

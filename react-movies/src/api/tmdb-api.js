@@ -20,11 +20,14 @@ export const getMovies = async (args) => {
       results: data.results || [],
       total_pages: data.total_pages || 1,
     };
+
   } catch (error) {
     console.error("Error fetching movies:", error);
     throw error;
   }
 };
+
+
 
 export const getMovie = async (args) => {
   const [, idPart] = args.queryKey;
@@ -46,25 +49,21 @@ export const getMovie = async (args) => {
     throw error;
   }
 };
-
-export const getGenres = () => {
+export const getGenres = async () => {
   return fetch(
-    `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .then((data) => data.genres)
-    .catch((error) => {
-      throw error;
-    });
+    "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
+      process.env.REACT_APP_TMDB_KEY +
+      "&language=en-US"
+  ).then( (response) => {
+    if (!response.ok) {
+      throw new Error(response.json().message);
+    }
+    return response.json();
+  })
+  .catch((error) => {
+    throw error
+ });
 };
-
 
 export const getMovieImages = ({ queryKey }) => {
   const [, idPart] = queryKey;
