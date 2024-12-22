@@ -35,19 +35,18 @@ export default function FilterMoviesCard(props) {
   };
   
   useEffect(() => {
+    // Fetch genres and set them in the state
     getGenres()
       .then((allGenres) => {
-        if (Array.isArray(allGenres.genres)) {
-          setGenres([{ id: '0', name: "All" }, ...allGenres.genres]);
+        if (Array.isArray(allGenres)) {
+          // Prepend an "All" option to the genre list
+          setGenres([{ id: '0', name: "All" }, ...allGenres]);
         }
       })
       .catch((error) => {
         console.error("Error fetching genres:", error);
       });
   }, []);
-  
-  
-  
 
   return (
     <Card 

@@ -50,20 +50,25 @@ export const getMovie = async (args) => {
   }
 };
 export const getGenres = async () => {
-  return fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-      process.env.REACT_APP_TMDB_KEY +
-      "&language=en-US"
-  ).then( (response) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/genres", {
+      headers: {
+        'Authorization': window.localStorage.getItem('token'),
+      },
+    });
+
     if (!response.ok) {
-      throw new Error(response.json().message);
+      throw new Error('Failed to fetch genres from backend');
     }
-    return response.json();
-  })
-  .catch((error) => {
-    throw error
- });
+
+    const data = await response.json();
+    return data.genres || []; // return genres list
+  } catch (error) {
+    console.error("Error fetching genres:", error);
+    throw error;
+  }
 };
+
 
 export const getMovieImages = ({ queryKey }) => {
   const [, idPart] = queryKey;
