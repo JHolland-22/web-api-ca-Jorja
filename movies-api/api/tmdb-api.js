@@ -2,9 +2,9 @@ import fetch from 'node-fetch';
 
 export const getUpcomingMovies = async () => {
   try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_KEY}&language=en-US&page=1`
-    );
+    const response = await fetch
+     ('http://localhost:8080/tmdb/upcoming');
+    
 
     if (!response.ok) {
       throw new Error('Failed to fetch upcoming movies');

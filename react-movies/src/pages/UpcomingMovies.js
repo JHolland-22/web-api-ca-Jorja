@@ -16,14 +16,16 @@ const UpcomingMoviesPage = () => {
   // Access the function to add movies to 'must watch' list from context
   const { addToMustWatch } = useContext(MoviesContext);
 
-  // Fetch the upcoming movies for the current page using React Query
   const { data, error, isLoading, isError } = useQuery(
-    ["upcoming", page], // Query key includes the page number
-    () => getUpcomingMovies(page), // Fetch upcoming movies for the given page
+    ["upcoming", { page }], // Query key with page as part of the object
+    ({ queryKey }) => {
+      return getUpcomingMovies(queryKey); // Pass the queryKey directly to getUpcomingMovies
+    },
     {
-      keepPreviousData: true, // Cache previous data while loading new data
+      keepPreviousData: true, // Keep old data while fetching new data
     }
   );
+  
 
   // Fetch movie genres when the component mounts
   useEffect(() => {

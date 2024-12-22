@@ -104,22 +104,40 @@ export const getMovieReviews = async ({ queryKey }) => {
   }
 };
 
-export const getUpcomingMovies = (page = 1) => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=${page}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
+export const getUpcomingMovies = async (args) => {
+  const [, idPart] = args;
+  const { page } = idPart;
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/upcoming?page=${page}`,
+      {
+        headers: {
+          'Authorization': window.localStorage.getItem('token') || '',
+        },
       }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+    );
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`Failed to fetch upcoming movies: ${errorMessage}`);
+    }
+
+    const data = await response.json();
+
+    console.log("Upcoming Movies Data:", data);
+
+    return {
+      results: data.results || [],
+      total_pages: data.total_pages || 1,
+    };
+
+  } catch (error) {
+    console.error("Error fetching upcoming movies:", error);
+    throw error;
+  }
 };
+
 
 
 
