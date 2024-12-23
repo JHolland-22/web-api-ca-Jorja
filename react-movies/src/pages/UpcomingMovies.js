@@ -17,16 +17,14 @@ const UpcomingMoviesPage = () => {
   const { addToMustWatch } = useContext(MoviesContext);
 
   const { data, error, isLoading, isError } = useQuery(
-    ["upcoming", { page }], // Query key with page as part of the object
-    ({ queryKey }) => {
-      return getUpcomingMovies(queryKey); // Pass the queryKey directly to getUpcomingMovies
-    },
+    ["upcoming", { page }],
+    ({ queryKey }) => getUpcomingMovies(queryKey),
     {
-      keepPreviousData: true, // Keep old data while fetching new data
+      keepPreviousData: true,
+      staleTime: 5000,
     }
   );
   
-
   // Fetch movie genres when the component mounts
   useEffect(() => {
     getGenres().then((response) => {

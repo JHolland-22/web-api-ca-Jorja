@@ -2,20 +2,18 @@ import fetch from 'node-fetch';
 
 export const getUpcomingMovies = async () => {
   try {
-    const response = await fetch
-     ('http://localhost:8080/tmdb/upcoming');
-    
-
+    const response = await fetch('http://localhost:8080/tmdb/upcoming');
     if (!response.ok) {
-      throw new Error('Failed to fetch upcoming movies');
+      throw new Error('Failed to fetch upcoming from the backend');
     }
-
-    const data = await response.json();
-    return data;
+    const upcoming = await response.json();
+    return upcoming;
   } catch (error) {
-    throw error;  // Rethrow to propagate error to your route handler
+    console.error('Error fetching upcoming:', error);
+    throw error;
   }
 };
+
 
 export const getGenres = async () => {
   try {
@@ -38,7 +36,7 @@ export const getMovies = (args) => {
   const { page } = idPart;
 
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -52,7 +50,7 @@ export const getMovies = (args) => {
   
 export const getMovie = (id) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_KEY}`
   ).then(async (response) => {
     if (!response.ok) {
       throw new Error((await response.json()).message);

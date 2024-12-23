@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/', expressAsyncHandler(async (req, res) => {
     let { page = 1, limit = 10 } = req.query;
+    
     page = +page;
     limit = +limit;
 
@@ -36,7 +37,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
 router.get('/:id', (req, res, next) => {
     const id = parseInt(req.params.id);
     upcomingModel.findByMovieDBId(id)
-        .then(upcomingMovies => res.status(200).send(upcomingMovies))
+        .then(upcoming => res.status(200).send(upcoming))
         .catch(next);
 });
 

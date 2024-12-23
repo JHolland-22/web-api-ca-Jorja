@@ -109,31 +109,24 @@ export const getUpcomingMovies = async (args) => {
   const { page } = idPart;
 
   try {
-    const response = await fetch(
-      `http://localhost:8080/api/upcoming?page=${page}`,
-      {
-        headers: {
-          'Authorization': window.localStorage.getItem('token') || '',
-        },
+    const response = await fetch(`http://localhost:8080/api/movies/tmdb/upcoming?page=${page}`, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token'),
       }
-    );
+    });
 
     if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(`Failed to fetch upcoming movies: ${errorMessage}`);
+      throw new Error('Failed to fetch upcoming movies');
     }
 
     const data = await response.json();
-
-    console.log("Upcoming Movies Data:", data);
-
     return {
       results: data.results || [],
       total_pages: data.total_pages || 1,
     };
 
   } catch (error) {
-    console.error("Error fetching upcoming movies:", error);
+    console.error('Error fetching upcoming movies:', error);
     throw error;
   }
 };
