@@ -60,3 +60,17 @@ export const getMovie = (id) => {
     throw error;
   });
 };
+
+export const getTopMovies = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/tmdb/toprated');
+    if (!response.ok) {
+      throw new Error('Failed to fetch upcoming from the backend');
+    }
+    const toprated = await response.json();
+    return toprated;
+  } catch (error) {
+    console.error('Error fetching upcoming:', error);
+    throw error;
+  }
+};

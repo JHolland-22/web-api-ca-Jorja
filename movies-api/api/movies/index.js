@@ -3,6 +3,8 @@ import asyncHandler from 'express-async-handler';
 import movieModel from './movieModel';
 import { getUpcomingMovies, getGenres} from '../tmdb-api';
 import upcoming from '../../initialise-dev/upcoming';
+import topMovies from '../../initialise-dev/topMovies';
+
 import upcomingModel from '../upcomingMovies/upcomingModel';
 
 const router = express.Router();
@@ -88,5 +90,33 @@ router.get('/tmdb/genres', asyncHandler(async (req, res) => {
         res.status(500).json({ success: false, msg: 'Failed to fetch genres' });
     }
 }));
+
+router.get('/tmdb/toprated', asyncHandler(async (req, res) => {
+  let { page = 1, limit = 10 } = req.query;
+
+  page = +page;
+  limit = +limit;
+
+  if (isNaN(page) || page <= 0) page = 1;
+  if (isNaN(limit) || limit <= 0) limit = 10;
+
+  try {
+    const total_results = topMovies.length;
+    const results = topMovies.slice((page - 1) * limit, page * limit);
+
+    const total_pages = Math.ceil(total_results / limit);
+
+    res.status(200).json({
+      page,
+      total_pages,
+      total_results,
+      results: results || [],
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching top movies', error: error.message });
+  }
+}));
+
+
 
 export default router;

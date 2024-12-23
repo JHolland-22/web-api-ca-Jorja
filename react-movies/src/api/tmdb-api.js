@@ -222,7 +222,7 @@ export const getActorMovies = (actorId) => {
 
 export const getTopMovies = (page = 1) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}&api_key=${process.env.REACT_APP_TMDB_KEY}`
+    `http://localhost:8080/api/movies/tmdb/toprated?page=${page}`
   )
     .then((response) => {
       if (!response.ok) {
