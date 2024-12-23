@@ -14,7 +14,7 @@ const MoviePage = () => {
     const fetchMovieDetails = async () => {
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
+          `http://localhost:8080/api/movies/${id}`
         );
         if (!response.ok) throw new Error("Failed to fetch movie details");
         const movieData = await response.json();

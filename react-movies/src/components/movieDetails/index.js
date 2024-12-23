@@ -54,23 +54,30 @@ const MovieDetails = (props) => {
         <li>
           <Chip label="Genres" sx={{ ...chip }} color="primary" />
         </li>
-        {movie.genres.map((g) => (
-          <li key={g.name}>
-            <Chip label={g.name} sx={{ ...chip }} />
-          </li>
-        ))}
+        {movie.genres && movie.genres.length > 0 ? (
+          movie.genres.map((g) => (
+            <li key={g.name}>
+              <Chip label={g.name} sx={{ ...chip }} />
+            </li>
+          ))
+        ) : (
+          <Typography variant="body2">No genres available</Typography>
+        )}
       </Paper>
 
       <Paper component="ul" sx={{ ...root }}>
         <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
+
         <Chip
           icon={<MonetizationIcon />}
-          label={`${movie.revenue.toLocaleString()}`}
+          label={movie.revenue ? `${movie.revenue.toLocaleString()}` : 'N/A'}
         />
+
         <Chip
           icon={<StarRate />}
           label={`${movie.vote_average} (${movie.vote_count})`}
         />
+
         <Chip label={`Released: ${movie.release_date}`} />
       </Paper>
 
@@ -88,7 +95,7 @@ const MovieDetails = (props) => {
       <Fab
         color="secondary"
         variant="extended"
-        onClick={() => setDrawerOpen(true)} 
+        onClick={() => setDrawerOpen(true)}
         sx={{
           position: "fixed",
           bottom: 2,
@@ -100,12 +107,11 @@ const MovieDetails = (props) => {
       </Fab>
 
       <Drawer
-              anchor="top"
-              open={drawerOpen}
-              onClose={() => setDrawerOpen(false)}
-              >
-                <MovieReviews movie={movie} />
-            
+        anchor="top"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
+        <MovieReviews movie={movie} />
       </Drawer>
     </>
   );

@@ -50,7 +50,7 @@ export const getMovies = (args) => {
   
 export const getMovie = (id) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_KEY}`
+    `http://localhost:8080/api/movies/${id}`
   ).then(async (response) => {
     if (!response.ok) {
       throw new Error((await response.json()).message);
@@ -60,5 +60,3 @@ export const getMovie = (id) => {
     throw error;
   });
 };
-
-
