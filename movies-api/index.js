@@ -23,6 +23,7 @@ app.use('/api/movies', moviesRouter);
 app.use('/api/movies', authenticate, moviesRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/upcoming',upcomingRouter);
+
 app.use(defaultErrHandler); 
 
 app.listen(port, () => {

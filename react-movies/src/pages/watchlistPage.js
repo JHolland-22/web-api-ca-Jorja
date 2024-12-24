@@ -27,11 +27,15 @@ const WatchlistPage = () => {
   }
 
   // Map through the query responses and attach genre IDs to each movie object
-  const movies = watchlistMovieQueries.map((q) => {
-    q.data.genre_ids = q.data.genres.map((g) => g.id); // Map genre names to genre IDs
-    return q.data; // Return the updated movie data
+  const movies = watchlistMovieQueries
+  .filter((q) => q.isSuccess && q.data) // Only process successful queries with data
+  .map((q) => {
+    const movie = q.data;
+    if (movie.genres) {
+      movie.genre_ids = movie.genres.map((g) => g.id); // Map genres to genre_ids
+    }
+    return movie;
   });
-
   return (
     <PageTemplate
       title="WatchList" // Page title

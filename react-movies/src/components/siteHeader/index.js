@@ -30,7 +30,7 @@ const SiteHeader = () => {
     { label: "Upcoming", path: "/movies/upcoming" },
     { label: "Top Rated", path: "/movies/toprated" },
     { label: "Favorites", path: context.isAuthenticated ? "/movies/favorites" : "/login" },
-    { label: "Watchlist", path: context.isAuthenticated ? "/movies/playlist" : "/login" },
+    { label: "Watchlist", path: context.isAuthenticated ? "/movies/watchlist" : "/login" },
     { label: "Actors", path: "/actors" },
     { label: "Sign in", path: "/login", hideWhenAuth: true },
     { label: "Sign up", path: "/signup", hideWhenAuth: true },

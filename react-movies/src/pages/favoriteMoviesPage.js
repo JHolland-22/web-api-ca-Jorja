@@ -24,9 +24,14 @@ const FavoriteMoviesPage = () => {
         return <Spinner />;
     }
 
-    const movies = favoriteMovieQueries.map((q) => {
-        q.data.genre_ids = q.data.genres.map(g => g.id)
-        return q.data
+    const movies = favoriteMovieQueries
+    .filter((q) => q.isSuccess && q.data) // Only process successful queries with data
+    .map((q) => {
+      const movie = q.data;
+      if (movie.genres) {
+        movie.genre_ids = movie.genres.map((g) => g.id); // Map genres to genre_ids
+      }
+      return movie;
     });
 
 

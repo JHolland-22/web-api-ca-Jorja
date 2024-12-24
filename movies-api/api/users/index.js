@@ -2,10 +2,10 @@ import express from 'express';
 import User from './userModel';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
+import mongoose from 'mongoose';
 
-const router = express.Router(); // eslint-disable-line
+const router = express.Router();
 
-// Get all users
 router.get('/', async (req, res) => {
     try {
         const users = await User.find();
@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// register(Create)/Authenticate User
 router.post('/', asyncHandler(async (req, res) => {
     try {
         if (!req.body.username || !req.body.password) {
@@ -27,13 +26,10 @@ router.post('/', asyncHandler(async (req, res) => {
             await authenticateUser(req, res);
         }
     } catch (error) {
-        // Log the error and return a generic error message
-        console.error(error);
         res.status(500).json({ success: false, msg: 'Internal server error.' });
     }
 }));
 
-// Update a user
 router.put('/:id', async (req, res) => {
     try {
         if (req.body._id) delete req.body._id;
@@ -48,8 +44,56 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+// Add to user's favorites
+router.post('/:userId/favorites', asyncHandler(async (req, res) => {
+    if (!req.params.userId || !mongoose.Types.ObjectId.isValid(req.params.userId)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const { userId } = req.params;
+    const { movieId } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await User.updateOne(
+            { _id: userId },
+            { $addToSet: { favorites: movieId.toString() } } // Ensures movieId is unique in favorites
+        );
+
+        const updatedUser = await User.findById(userId);
+        res.status(200).json({
+            message: 'Favorite movie added successfully.',
+            favorites: updatedUser.favorites
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.toString() });
+    }
+}));
+
+
+// Get user's favorites
+router.get('/:userId/favorites', asyncHandler(async (req, res) => {
+    if (!req.params.userId || !mongoose.Types.ObjectId.isValid(req.params.userId)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ favorites: user.favorites });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+}));
+
+
 async function registerUser(req, res) {
-    // Add input validation logic here
     await User.create(req.body);
     res.status(201).json({ success: true, msg: 'User successfully created.' });
 }
@@ -62,7 +106,7 @@ async function authenticateUser(req, res) {
 
     const isMatch = await user.comparePassword(req.body.password);
     if (isMatch) {
-        const token = jwt.sign({ username: user.username }, process.env.SECRET);
+        const token = jwt.sign({ username: user.username, _id: user._id }, process.env.SECRET);
         res.status(200).json({ success: true, token: 'BEARER ' + token });
     } else {
         res.status(401).json({ success: false, msg: 'Wrong password.' });
