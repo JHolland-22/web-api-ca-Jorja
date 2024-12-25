@@ -132,31 +132,43 @@ export const getUpcomingMovies = async (args) => {
 };
 
 
+export const getActors = async (args) => {
+  const [, idPart] = args;
+  const { page } = idPart;
 
-
-export const getActors = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/person/popular?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=1`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/actors`,
+      {
+        headers: {
+          'Authorization': window.localStorage.getItem('token'),
+        },
       }
-      return response.json();
-    })
-    .then((data) => data.results)
-    .catch((error) => {
-      throw error;
-    });
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch actors');
+    }
+
+    const data = await response.json();
+    return {
+      results: data.results || [],
+      total_pages: data.total_pages || 1,
+    };
+  } catch (error) {
+    console.error("Error fetching actors:", error);
+    throw error;
+  }
 };
+
+
+
 
 export const getActor = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
   return fetch(
-    `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
+    `http://localhost:8080/api/actors/${id}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);

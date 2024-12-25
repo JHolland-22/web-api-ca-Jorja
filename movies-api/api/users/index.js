@@ -45,7 +45,12 @@ router.put('/:id', async (req, res) => {
 });
 
 // Add to user's favorites
-router.post('/:userId/favorites', asyncHandler(async (req, res) => {
+//trying to get this to do it so when you log in as user 1 you get the favorites of that and then likewise for user 2
+//but they keep copying eachother so anything done in user 1 is done in user 2 
+//any change to this and to the authenticate / index.js results in the whole app crashing and saying there is errors 
+// for everything
+
+/*router.post('/:userId/favorites', asyncHandler(async (req, res) => {
     if (!req.params.userId || !mongoose.Types.ObjectId.isValid(req.params.userId)) {
         return res.status(400).json({ message: 'Invalid user ID' });
     }
@@ -92,6 +97,7 @@ router.get('/:userId/favorites', asyncHandler(async (req, res) => {
     }
 }));
 
+*/
 
 async function registerUser(req, res) {
     await User.create(req.body);

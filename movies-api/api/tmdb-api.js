@@ -74,3 +74,32 @@ export const getTopMovies = async () => {
     throw error;
   }
 };
+
+const getActors = async (page) => {
+  const response = await fetch(`http://localhost:8080/api/actors?page=${page}`, {
+      headers: {
+          'Authorization': window.localStorage.getItem('token'),
+      },
+  });
+
+  if (!response.ok) {
+      throw new Error(`Failed to fetch actors: ${response.statusText}`);
+  }
+
+  return await response.json();
+};
+
+
+
+export const getActor = (id) => {
+  return fetch(
+    `http://localhost:8080/api/actor/${id}`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.json().message);
+    }
+    return response.json();
+  }).catch((error) => {
+     throw error
+  });
+};
