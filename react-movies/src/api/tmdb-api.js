@@ -133,18 +133,18 @@ export const getUpcomingMovies = async (args) => {
 
 
 export const getActors = async (args) => {
-  const [, idPart] = args;
-  const { page } = idPart;
-
+  if (!Array.isArray(args) || args.length < 2 || typeof args[1] !== 'object') {
+    throw new Error('Invalid arguments passed to getActors');
+  }
+  
+  const { page = 1 } = args[1];
+  
   try {
-    const response = await fetch(
-      `http://localhost:8080/api/actors`,
-      {
-        headers: {
-          'Authorization': window.localStorage.getItem('token'),
-        },
+    const response = await fetch(`http://localhost:8080/api/movies/tmdb/actors?page=${page}`, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token'),
       }
-    );
+    });
 
     if (!response.ok) {
       throw new Error('Failed to fetch actors');
@@ -155,11 +155,14 @@ export const getActors = async (args) => {
       results: data.results || [],
       total_pages: data.total_pages || 1,
     };
+
   } catch (error) {
-    console.error("Error fetching actors:", error);
+    console.error('Error fetching actors:', error);
     throw error;
   }
 };
+
+
 
 
 
@@ -168,7 +171,7 @@ export const getActor = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
   return fetch(
-    `http://localhost:8080/api/actors/${id}`
+    `http://localhost:8080/api/movies/tmdb/actors/${id}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);

@@ -74,26 +74,23 @@ export const getTopMovies = async () => {
     throw error;
   }
 };
-
-const getActors = async (page) => {
-  const response = await fetch(`http://localhost:8080/api/actors?page=${page}`, {
-      headers: {
-          'Authorization': window.localStorage.getItem('token'),
-      },
-  });
-
-  if (!response.ok) {
-      throw new Error(`Failed to fetch actors: ${response.statusText}`);
+export const getActors = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/tmdb/actors');
+    if (!response.ok) {
+      throw new Error('Failed to fetch actors from the backend');
+    }
+    const actors = await response.json();
+    return actors;
+  } catch (error) {
+    console.error('Error fetching actors:', error);
+    throw error;
   }
-
-  return await response.json();
 };
-
-
 
 export const getActor = (id) => {
   return fetch(
-    `http://localhost:8080/api/actor/${id}`
+    `http://localhost:8080/tmdb/actor/${id}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);

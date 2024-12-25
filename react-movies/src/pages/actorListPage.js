@@ -1,63 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useQuery } from "react-query";
 import { getActors } from "../api/tmdb-api"; // Function to fetch actors from API
-import ActorListPageTemplate from "../components/templateActorListPage"; // Template for displaying the actor list
-import Spinner from "../components/spinner"; // Spinner while loading data
-import Pagination from "@mui/material/Pagination"; // For pagination
+import PageTemplate from "../components/templateActorListPage"; // Template for displaying the actor list
+import Spinner from "../components/spinner"; // Spinner component while loading data
+import { ActorsContext } from "../contexts/actorContext"; // Context for actions like adding to the watch list
+import Pagination from "@mui/material/Pagination"; // Pagination component
+import IconButton from "@mui/material/IconButton"; // Icon button for adding to the watch list
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd"; // Playlist add icon
 
-const ActorPage = () => {
-  const [page, setPage] = useState(1); // Define page state
+const ActorsPage = () => {
+  const [page, setPage] = useState(1); // State to store the current page
 
-  // Fetching actors from the API using react-query's useQuery hook
-  const { data, error, isLoading, isError } = useQuery(
-    ["actors", { page }],  // Pass page as part of the query key
-    ({ queryKey }) => getActors(queryKey), // Fetch actors based on the queryKey
+  // Access the function to add actors to the 'watch list' from context
+  const { addToWatchList } = useContext(ActorsContext);
+
+  // Fetch actors using react-query's useQuery hook
+  const { data, isLoading, isError, error } = useQuery(
+    ['actors', page], // Query key with page as part of key
+    () => getActors([null, { page }]), // Fetch actors data based on the page
     {
-      keepPreviousData: true, // Keep previous data while loading the new page's data
+      keepPreviousData: true, // Keep previous data while fetching new data
     }
   );
 
-  // Handle loading state
+  // Show a spinner while the data is loading
   if (isLoading) {
     return <Spinner />;
   }
 
-  // Handle error state
+  // Show an error message if the data fetching failed
   if (isError) {
     return <h1>{error.message}</h1>;
   }
 
-  const actors = data?.results || []; // Actors list from API response
-  const totalPages = data?.total_pages || 1; // Total pages from the API response
+  // Get the list of actors from the data object, or use an empty array if undefined
+  const actors = data?.results || [];
+  // Get the total number of pages from the data object
+  const totalPages = data?.total_pages || 1;
 
-  // Handle page change
+  // Handler for page change in pagination
   const handlePageChange = (event, value) => {
-    setPage(value); // Set the page value when the user changes the page
+    setPage(value); // Update page state with the new page number
   };
 
   return (
     <>
-      {/* Render Actor List Template */}
-      <ActorListPageTemplate
-        title="Popular Actors"
-        actors={actors} // Pass actors data to ActorListPageTemplate
+      <PageTemplate
+        title="Actors" // Page title
+        actors={actors} // List of actors to display
+        action={(actor) => (
+          // Icon button to add actor to the watch list
+          <IconButton
+            aria-label="add to watch list"
+            onClick={() => {
+              addToWatchList(actor); // Add actor to the watch list
+              console.log("Watch List Actor:", actor.id); // Log actor ID (for debugging)
+            }}
+          >
+            <PlaylistAddIcon /> {/* Icon for the button */}
+          </IconButton>
+        )}
       />
       
-      {/* Pagination Component */}
+      {/* Pagination */}
       <Pagination
-        count={totalPages} // Total pages for pagination
+        count={totalPages} // Total pages
         page={page} // Current page
-        onChange={handlePageChange} // Function to handle page changes
-        color="primary"
-        shape="rounded"
+        onChange={handlePageChange} // Handle page change
+        color="primary" // Set color
+        shape="rounded" // Rounded pagination buttons
         sx={{
           display: "flex",
-          justifyContent: "center",
-          margin: "20px 0",
+          justifyContent: "center", // Center pagination
+          margin: "20px 0", // Add margin
         }}
       />
     </>
   );
 };
 
-export default ActorPage;
+export default ActorsPage;

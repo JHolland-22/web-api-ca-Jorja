@@ -1,43 +1,75 @@
-import { getActor, getActors } from '../tmdb-api';
+import { getActor } from '../tmdb-api'; 
 import asyncHandler from 'express-async-handler';
 import express from 'express';
+import actors from '../../initialise-dev/actors'; // Hardcoded actor data
 
 const router = express.Router();
 
-router.get('/', asyncHandler(async (req, res) => {
+// Route to get a paginated list of actors
+router.get('/tmdb/actors', asyncHandler(async (req, res) => {
+    let { page = 1, limit = 10 } = req.query;
+
+    page = +page; // Convert to number
+    limit = +limit; // Convert to number
+  
+    if (isNaN(page) || page <= 0) page = 1; // Validate page
+    if (isNaN(limit) || limit <= 0) limit = 10; // Validate limit
+  
     try {
-        let { page = 1, limit = 10 } = req.query;
-        page = parseInt(page, 10);
-        limit = parseInt(limit, 10);
-
-        if (isNaN(page) || isNaN(limit) || page < 1 || limit < 1) {
-            return res.status(400).json({ message: 'Invalid page or limit parameters.' });
-        }
-
-        const actors = await getActors(page);
-        res.status(200).json(actors);
+      const total_results = actors.length; // Total number of actors
+      const results = actors.slice((page - 1) * limit, page * limit); // Slice actors array for current page
+  
+      const total_pages = Math.ceil(total_results / limit); // Calculate total pages
+  
+      // Send paginated response
+      res.status(200).json({
+        page,
+        total_pages,
+        total_results,
+        results: results || [],
+      });
     } catch (error) {
-        console.error('Error fetching actors:', error.message, error.stack);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+      // Handle server error
+      res.status(500).json({ message: 'Error fetching actors movies', error: error.message });
     }
 }));
 
-router.get('/:id', asyncHandler(async (req, res) => {
+// Route to fetch a specific actor by ID
+router.get('/tmdb/actors/:id', asyncHandler(async (req, res) => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id, 10); // Get actor ID from URL parameters
         if (isNaN(id)) {
+            // Return error if ID is invalid
             return res.status(400).json({ message: 'Invalid actor ID.' });
         }
 
-        const actor = await getActor(id);
-        if (actor) {
-            res.status(200).json(actor);
-        } else {
-            res.status(404).json({ message: 'The actor you requested could not be found.', status_code: 404 });
+        // Try to fetch actor data from external API
+        const actorData = await getActor(id);
+
+        // If actor not found from API, fallback to hardcoded data
+        if (!actorData) {
+            console.log(`Actor with ID ${id} not found from API. Returning hardcoded actor data.`);
+            const hardcodedActor = actors.find((actor) => actor.id === id);
+            if (hardcodedActor) {
+                return res.status(200).json(hardcodedActor); // Return hardcoded actor
+            } else {
+                return res.status(404).json({ message: 'Actor not found.' }); // Actor not found in hardcoded data
+            }
         }
+
+        // Return actor data if fetched successfully
+        res.status(200).json(actorData);
     } catch (error) {
         console.error('Error fetching actor:', error.message, error.stack);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        // Return fallback actor in case of error
+        console.log('Actor fetch failed, returning fallback.');
+        const hardcodedActor = actors.find((actor) => actor.id === id);
+        if (hardcodedActor) {
+            return res.status(200).json(hardcodedActor); // Return fallback actor data
+        } else {
+            // Handle internal server error
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
     }
 }));
 

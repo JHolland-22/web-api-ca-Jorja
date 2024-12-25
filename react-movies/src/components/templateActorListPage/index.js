@@ -9,12 +9,11 @@ function ActorListPageTemplate({ title, action }) {
   const [actors, setActors] = useState([]); // State to store actors
   const [nameFilter, setNameFilter] = useState(""); // State to store name filter
 
-  useEffect(() => {
-    // Fetch the actors when the component mounts
-    getActors()
-      .then((data) => setActors(data)) // Update state with actor data
-      .catch((error) => console.error("Error fetching actors:", error));
-  }, []); // Empty dependency array to run this effect once
+  const args = [null, { page: 1 }];
+  getActors(args)
+    .then((data) => setActors(data.results)) // Update state with actor data
+    .catch((error) => console.error("Error fetching actors:", error));
+  
 
   const handleChange = (type, value) => {
     if (type === "name") {
