@@ -1,10 +1,11 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import movieModel from './movieModel';
-import {getGenres , getActor} from '../tmdb-api';
+import {getGenres, getActor } from '../tmdb-api';
 import upcoming from '../../initialise-dev/upcoming';
 import topMovies from '../../initialise-dev/topMovies';
 import actors from '../../initialise-dev/actors'; // Hardcoded actor data
+import actorModel from '../actors/actorModel';
 
 const router = express.Router();
 
@@ -118,7 +119,6 @@ router.get('/tmdb/toprated', asyncHandler(async (req, res) => {
 
 router.get('/tmdb/actors', asyncHandler(async (req, res) => {
   let { page = 1, limit = 10 } = req.query;
-
   page = +page;
   limit = +limit;
 
@@ -138,46 +138,72 @@ router.get('/tmdb/actors', asyncHandler(async (req, res) => {
       results: results || [],
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching actors movies', error: error.message });
+    res.status(500).json({ message: 'Error fetching actors', error: error.message });
+  }
+}));
+router.get('/tmdb/actors/:id', asyncHandler(async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+
+  const actor = actors.find(actor => actor.id === id);
+
+  if (actor) {
+    res.status(200).json(actor);
+  } else {
+    res.status(404).json({ message: `Actor with ID ${id} not found`, status_code: 404 });
   }
 }));
 
 
 
-// Fetch a specific actor by ID
-router.get('tmdb/actors/:id', asyncHandler(async (req, res) => {
+
+router.get('/tmdb/person/:id/images', asyncHandler(async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: 'Invalid actor ID.' });
+    }
+
+    const actorImageData = await getActorImages(id);
+
+    if (!actorImageData || !actorImageData.profiles || actorImageData.profiles.length === 0) {
+      console.log(`Actor with ID ${id} not found from API. Returning fallback actor data.`);
+      
+      const hardcodedActor = actors.find((actor) => actor.id === id);
+      if (hardcodedActor) {
+        return res.status(200).json(hardcodedActor);
+      } else {
+        return res.status(404).json({ message: 'Actor not found.' });
+      }
+    }
+
+    return res.status(200).json(actorImageData);
+  } catch (error) {
+    return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+}));
+
+
+router.get('/tmdb/movies/:id/images', asyncHandler(async (req, res) => {
   try {
       const id = parseInt(req.params.id, 10);
       if (isNaN(id)) {
-          return res.status(400).json({ message: 'Invalid actor ID.' });
+          return res.status(400).json({ message: 'Invalid movie ID.' });
       }
 
-      // Try to fetch actor by ID
-      const actorData = await getActor(id);
+      const movieData = await getMovieImages(id);
 
-      // If not found, return hardcoded actor data
-      if (!actorData) {
-          console.log(`Actor with ID ${id} not found from API. Returning hardcoded actor data.`);
-          const hardcodedActor = actors.find((actor) => actor.id === id);
-          if (hardcodedActor) {
-              return res.status(200).json(hardcodedActor);
+      if (!movieData) {
+          const hardcodedMovie = movies.find((movie) => movie.id === id);
+          if (hardcodedMovie) {
+              return res.status(200).json(hardcodedMovie);
           } else {
-              return res.status(404).json({ message: 'Actor not found.' });
+              return res.status(404).json({ message: 'Movie not found.' });
           }
       }
 
-      // If actor data fetched, return it
-      res.status(200).json(actorData);
+      return res.status(200).json(movieData);
   } catch (error) {
-      console.error('Error fetching actor:', error.message, error.stack);
-      // Return hardcoded data in case of error
-      console.log('Actor fetch failed, returning fallback.');
-      const hardcodedActor = actors.find((actor) => actor.id === id);
-      if (hardcodedActor) {
-          return res.status(200).json(hardcodedActor);
-      } else {
-          return res.status(500).json({ message: 'Internal Server Error' });
-      }
+      return res.status(500).json({ message: 'Server error', error: error.message });
   }
 }));
 

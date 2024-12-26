@@ -4,57 +4,58 @@ import ActorDetails from "../components/actorDetails";
 import PageTemplate from "../components/templateActorPage";
 
 const ActorDetailsPage = () => {
-  // Get the actor ID from the URL parameters
-  const { id } = useParams();
-
-  // State variables to manage actor details, loading state, and error handling
+  const { id } = useParams();  // Get actor ID from the URL
   const [actor, setActor] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch the actor details when the component mounts or when the actor ID changes
   useEffect(() => {
     const fetchActorDetails = async () => {
-      // Set loading state to true and reset previous error
-      setIsLoading(true);
-      setError(null);
       try {
-        // Fetch actor details from The Movie Database API
         const response = await fetch(
-          `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
+          `http://localhost:8080/api/movies/tmdb/actors/${id}`, {
+            headers: {
+              'Authorization': window.localStorage.getItem('token'), // Ensure token is included
+            }
+          }
         );
-        if (!response.ok) throw new Error("Failed to fetch actor details");
 
-        // Parse the response data
+        if (!response.ok) {
+          const responseText = await response.text(); // Get raw response text
+          
+          if (responseText.includes('<html>')) {
+            throw new Error("Received HTML instead of JSON. This might be an error page.");
+          }
+          
+          const errorData = JSON.parse(responseText); // Try to parse the error message
+          throw new Error(errorData.message || 'Failed to fetch actor details');
+        }
+
         const actorData = await response.json();
-        // Set the actor state with the fetched data
-        setActor(actorData);
+        setActor(actorData);  // Store actor data in state
       } catch (err) {
-        // If an error occurs, set the error message
-        setError(err.message);
+        setError(err.message);  // Handle errors
       } finally {
-        // Set loading state to false when the fetch operation is complete
-        setIsLoading(false);
+        setIsLoading(false);  // Set loading to false after fetching
       }
     };
 
-    fetchActorDetails(); // Invoke the function to fetch actor details
-  }, [id]); // Dependency on actor ID (id)
+    fetchActorDetails();
+  }, [id]);  // Run on component mount and when `id` changes
 
-  // If data is still loading, show a loading message
+  // Display loading state
   if (isLoading) return <p>Loading...</p>;
 
-  // If there was an error fetching data, display the error message
+  // Display error message if fetch failed
   if (error) return <h1>{error}</h1>;
 
-  // If the actor data is successfully fetched, render the PageTemplate and ActorDetails components
+  // If actor data exists, render it
   return actor ? (
-    <PageTemplate actor={actor}>
+    <PageTemplate actor={actor}>  {/* Pass actor data to page template */}
       <ActorDetails actor={actor} />
     </PageTemplate>
   ) : (
-    // If actor data is not yet available, show a waiting message
-    <p>Waiting for actor details...</p>
+    <p>No actor details found</p>  // Fallback message if actor data doesn't exist
   );
 };
 

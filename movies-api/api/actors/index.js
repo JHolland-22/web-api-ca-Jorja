@@ -72,5 +72,4 @@ router.get('/tmdb/actors/:id', asyncHandler(async (req, res) => {
         }
     }
 }));
-
 export default router;

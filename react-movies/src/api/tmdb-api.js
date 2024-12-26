@@ -88,6 +88,7 @@ export const getMovieImages = ({ queryKey }) => {
   });
 };
 
+
 export const getMovieReviews = async ({ queryKey }) => {
   const [, { id }] = queryKey;
   try {
@@ -163,31 +164,29 @@ export const getActors = async (args) => {
 };
 
 
-
-
-
-
-export const getActor = (args) => {
+export const getActor = async (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
-  return fetch(
-    `http://localhost:8080/api/movies/tmdb/actors/${id}`
-  ).then((response) => {
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/movies/tmdb/actors/${id}`, {
+        headers: {
+          'Authorization': window.localStorage.getItem('token'),
+        }
+      }
+    );
     if (!response.ok) {
-      throw new Error(response.json().message);
+      throw new Error((await response.json()).message);
     }
     return response.json();
-  })
-  .catch((error) => {
-      throw error
-  });
+  } catch (error) {
+    throw error;
+  }
 };
 
-
 export const getActorImages = (id) => {
-  return fetch(
-    `https://api.themoviedb.org/3/person/${id}/images?api_key=${process.env.REACT_APP_TMDB_KEY}`
-  )
+  return fetch(`http://localhost:8080/api/movies/tmdb/person/${id}/images`)
     .then((response) => {
       if (!response.ok) {
         return response.json().then((error) => {
@@ -196,10 +195,20 @@ export const getActorImages = (id) => {
       }
       return response.json();
     })
+    .then((data) => {
+      if (!data || !data.profiles || data.profiles.length === 0) {
+        throw new Error("No images found for this actor.");
+      }
+      return data.profiles;
+    })
     .catch((error) => {
-      throw error;
+      console.error("Error fetching actor images:", error);
+      return [];
     });
 };
+
+
+
 
 export const getMovieCredits = (movieId) => {
   return fetch(

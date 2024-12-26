@@ -36,7 +36,7 @@ export const getMovies = (args) => {
   const { page } = idPart;
 
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+    'http://localhost:8080/api/movies'
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -60,6 +60,21 @@ export const getMovie = (id) => {
     throw error;
   });
 };
+
+
+export const getMovieImages = (id) => {
+  return fetch(
+    `http://localhost:8080/api/movies/${id}/images`
+  ).then(async (response) => {
+    if (!response.ok) {
+      throw new Error((await response.json()).message);
+    }
+    return response.json();
+  }).catch((error) => {
+    throw error;
+  });
+}; 
+
 
 export const getTopMovies = async () => {
   try {
@@ -88,15 +103,18 @@ export const getActors = async () => {
   }
 };
 
-export const getActor = (id) => {
-  return fetch(
-    `http://localhost:8080/tmdb/actor/${id}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  }).catch((error) => {
-     throw error
-  });
+export const getActor = async (id) => {
+  try {
+      const response = await fetch(
+          `http://localhost:8080/api/movies/tmdb/actors/${id}`, {
+              headers: { 'Authorization': window.localStorage.getItem('token') },
+          }
+      );
+      if (!response.ok) {
+          throw new Error((await response.json()).message);
+      }
+      return response.json();
+  } catch (error) {
+      throw error;
+  }
 };

@@ -11,68 +11,64 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd"; // Playlist add i
 const ActorsPage = () => {
   const [page, setPage] = useState(1); // State to store the current page
 
-  // Access the function to add actors to the 'watch list' from context
-  const { addToWatchList } = useContext(ActorsContext);
+  const { addToWatchList } = useContext(ActorsContext); // Access the function to add actors to the 'watch list' from context
 
-  // Fetch actors using react-query's useQuery hook
+  // Fetching actors from the API using react-query's useQuery hook
   const { data, isLoading, isError, error } = useQuery(
-    ['actors', page], // Query key with page as part of key
-    () => getActors([null, { page }]), // Fetch actors data based on the page
+    ['actors', page], // Query key for fetching actors, including page for pagination
+    () => getActors([null, { page }]), // API function for fetching actors
     {
       keepPreviousData: true, // Keep previous data while fetching new data
     }
   );
 
-  // Show a spinner while the data is loading
+  // Handle loading state
   if (isLoading) {
     return <Spinner />;
   }
 
-  // Show an error message if the data fetching failed
+  // Handle errors if fetching fails
   if (isError) {
     return <h1>{error.message}</h1>;
   }
 
-  // Get the list of actors from the data object, or use an empty array if undefined
-  const actors = data?.results || [];
-  // Get the total number of pages from the data object
-  const totalPages = data?.total_pages || 1;
+  const actors = data?.results || []; // Actors list from API response
+  const totalPages = data?.total_pages || 1; // Total number of pages for pagination
 
-  // Handler for page change in pagination
   const handlePageChange = (event, value) => {
-    setPage(value); // Update page state with the new page number
+    setPage(value); // Set the current page when pagination changes
   };
 
   return (
     <>
+      {/* Render Actor List Template */}
       <PageTemplate
-        title="Actors" // Page title
-        actors={actors} // List of actors to display
+        title="Actors"
+        actors={actors} // Pass actors data to PageTemplate
         action={(actor) => (
-          // Icon button to add actor to the watch list
           <IconButton
             aria-label="add to watch list"
             onClick={() => {
-              addToWatchList(actor); // Add actor to the watch list
-              console.log("Watch List Actor:", actor.id); // Log actor ID (for debugging)
+              addToWatchList(actor); // Add actor to watch list
+              console.log("Watch List Actor:", actor.id); // Log actor ID for debugging
             }}
           >
-            <PlaylistAddIcon /> {/* Icon for the button */}
+            <PlaylistAddIcon />
           </IconButton>
         )}
       />
       
-      {/* Pagination */}
+      {/* Pagination controls */}
       <Pagination
-        count={totalPages} // Total pages
+        count={totalPages} // Total number of pages
         page={page} // Current page
         onChange={handlePageChange} // Handle page change
-        color="primary" // Set color
-        shape="rounded" // Rounded pagination buttons
+        color="primary"
+        shape="rounded"
         sx={{
           display: "flex",
-          justifyContent: "center", // Center pagination
-          margin: "20px 0", // Add margin
+          justifyContent: "center",
+          margin: "20px 0",
         }}
       />
     </>
