@@ -185,8 +185,12 @@ export const getActor = async (args) => {
   }
 };
 
+
+
 export const getActorImages = (id) => {
-  return fetch(`http://localhost:8080/api/movies/tmdb/person/${id}/images`)
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}/images?api_key=${process.env.REACT_APP_TMDB_KEY}`
+  )
     .then((response) => {
       if (!response.ok) {
         return response.json().then((error) => {
@@ -195,17 +199,11 @@ export const getActorImages = (id) => {
       }
       return response.json();
     })
-    .then((data) => {
-      if (!data || !data.profiles || data.profiles.length === 0) {
-        throw new Error("No images found for this actor.");
-      }
-      return data.profiles;
-    })
     .catch((error) => {
-      console.error("Error fetching actor images:", error);
-      return [];
+      throw error;
     });
 };
+
 
 
 

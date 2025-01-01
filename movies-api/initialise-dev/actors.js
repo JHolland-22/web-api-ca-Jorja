@@ -8,6 +8,7 @@ const actors = [
       original_name: "Jeremy Piven",
       popularity: 268.871,
       profile_path: "/pqdR8zqAWF87chGYlbdYr0YfC7g.jpg",
+      biography: "Jeremy Piven is an American actor and producer known for his roles in TV and film, especially as Ari Gold in the hit series 'Entourage'.",
       known_for: [
         {
           adult: false,
@@ -74,6 +75,7 @@ const actors = [
       original_name: "Jennifer Connelly",
       popularity: 169.893,
       profile_path: "/3oYDftEbM3YgBiHYcbbIPRNZrTL.jpg",
+      biography:"Jennifer Connelly is an American actress who gained widespread recognition in the late 1980s for her roles in films like Labyrinth (1986) and The Rocketeer (1991). She continued to build a successful career, earning an Academy Award for Best Supporting Actress for her role in A Beautiful Mind (2001). Throughout her career, Connelly has showcased her versatility in films such as Requiem for a Dream (2000), Blood Diamond (2006), and Top Gun: Maverick (2022). Known for her ethereal beauty and strong performances, Connelly remains a respected figure in Hollywood.",
       known_for: [
         {
           adult: false,
@@ -140,6 +142,7 @@ const actors = [
       original_name: "Aya Asahina",
       popularity: 156.466,
       profile_path: "/zF3la0KvayUV3uACYPiBgCRIQcI.jpg",
+      biography: "Aya Asahina is a Japanese actress and model, recognized for her charming looks and presence in various television dramas and films. She first gained fame as a gravure idol, before transitioning into acting. Asahina's talent has won her roles in a range of Japanese dramas and films, earning her a dedicated following. Her graceful persona and strong acting abilities have made her a prominent figure in Japan’s entertainment industry.",
       known_for: [
         {
           adult: false,
@@ -206,6 +209,7 @@ const actors = [
       original_name: "Jenna Ortega",
       popularity: 130.631,
       profile_path: "/7oUAtVgZU0uLdUSvDHKkINt1y7Y.jpg",
+      biography:"Jenna Ortega is an American actress, known for her roles in both television and film. She began her career at a young age, first making a name for herself with roles in Disney Channel’s Stuck in the Middle (2016–2018). Ortega gained significant recognition for her performances in You (2018) and The Babysitter: Killer Queen (2020), and her portrayal of Wednesday Addams in Netflix’s Wednesday (2022) garnered critical acclaim. Known for her strong advocacy on social issues and her impressive range as an actress, Ortega has quickly become one of Hollywood's brightest young stars.",
       known_for: [
         {
           adult: false,
@@ -272,6 +276,7 @@ const actors = [
       original_name: "Nicolette Scorsese",
       popularity: 127.326,
       profile_path: "/i0PWIBj2dZQm76uepLhMO1188HS.jpg",
+      biography:"Nicolette Scorsese is an American actress known for her roles in films in the late 1980s and early 1990s. Best remembered for her appearance as the sultry lingerie model in National Lampoon's Christmas Vacation (1989), Scorsese's performances often showcased her striking beauty and charismatic presence. While her acting career was brief, she also appeared in films like Boxing Helena (1993) and The Super (1991). Her impact on pop culture, particularly through Christmas Vacation, has cemented her as a memorable figure in film history.",
       known_for: [
         {
           adult: false,
@@ -338,6 +343,7 @@ const actors = [
       original_name: "Sydney Sweeney",
       popularity: 121.927,
       profile_path: "/afr2eoktU4lFYtmtfKo05EbQdXo.jpg",
+      biography:"Sydney Sweeney is an American actress known for her performances in both television and film. Sweeney rose to prominence through her role as Cassie Howard in the critically acclaimed series Euphoria (2019–present), which earned her widespread attention for her powerful portrayal of a troubled teen. She has also appeared in The White Lotus (2021) and Once Upon a Time in Hollywood (2019), showcasing her ability to tackle diverse roles. With a growing career, Sweeney is considered one of the most promising young talents in Hollywood.",
       known_for: [
         {
           adult: false,
@@ -404,6 +410,7 @@ const actors = [
       original_name: "Ranbir Kapoor",
       popularity: 120.342,
       profile_path: "/ymYNHV9luwgyrw17NXHqbOWTQkg.jpg",
+      biography:"Ranbir Kapoor is an Indian actor who is widely regarded as one of the most talented and versatile actors in Bollywood. Born into the famous Kapoor family, he made his film debut in Saawariya (2007) and soon became a household name. Kapoor has since starred in a variety of successful films, including Rockstar (2011), Barfi! (2012), Sanju (2018), and Ae Dil Hai Mushkil (2016). Known for his dynamic performances and charismatic screen presence, Ranbir has earned numerous accolades for his acting, and continues to be one of the leading figures in the Indian film industry.",
       known_for: [
         {
           adult: false,
@@ -470,6 +477,7 @@ const actors = [
       original_name: "Jason Statham",
       popularity: 119.223,
       profile_path: "/whNwkEQYWLFJA8ij0WyOOAD5xhQ.jpg",
+      biography:"Jason Statham is an English actor and former competitive diver, best known for his roles in high-octane action films. He gained international fame with roles in The Transporter series (2002-2008), Crank (2006), and The Expendables (2010). Known for performing many of his own stunts, Statham’s tough-guy persona and martial arts skills have made him a favorite in action-packed movies. He also stars in the Fast & Furious spin-off, Hobbs & Shaw (2019), and continues to be a major figure in the action movie genre.",
       known_for: [
         {
           adult: false,
@@ -536,6 +544,7 @@ const actors = [
       original_name: "Anna Slotky",
       popularity: 118.62,
       profile_path: "/6NvXc8Z8t8rccjliVPparVeUGj0.jpg",
+      biography:"Anna Slotky is an American actress best known for her work in television and film during the late 1980s and early 1990s. She appeared in a variety of TV shows, including The Wonder Years, and featured in several movies, such as The New Adventures of Pippi Longstocking (1988). Although Slotky’s career in Hollywood was brief, she is fondly remembered for her charming performances and youthful energy in her roles. She remains a cult favorite for fans of 90s TV.",
       known_for: [
         {
           adult: false,
@@ -602,6 +611,7 @@ const actors = [
       original_name: "Song Kang",
       popularity: 115.358,
       profile_path: "/dMUXkMfkTEw3qrJisk0mQCQxmBI.jpg",
+      biography:"Song Kang is a South Korean actor who has gained significant popularity in recent years for his performances in Korean dramas. He became a rising star with his lead role in the hit series Love Alarm (2019), followed by appearances in Navillera (2021) and Nevertheless (2021). Known for his youthful charm and emotional depth, Song has quickly become a favorite among K-drama fans. With a growing fanbase, he is poised to become one of South Korea’s most prominent actors.",
       known_for: [
         {
           adult: false,
@@ -668,6 +678,7 @@ const actors = [
       original_name: "Josh Hutcherson",
       popularity: 114.327,
       profile_path: "/npowygg8rH7uJ4v7rAoDMsHBhNq.jpg",
+      biography:"Josh Hutcherson is an American actor best known for his role as Peeta Mellark in the Hunger Games film series (2012-2015). He began his acting career at a young age and quickly gained recognition with roles in films such as Bridge to Terabithia (2007) and The Kids Are All Right (2010). Hutcherson has showcased his acting versatility across different genres, and after the Hunger Games series, he continued to take on diverse roles in both film and television, earning critical acclaim for his work.",
       known_for: [
         {
           adult: false,
@@ -734,6 +745,7 @@ const actors = [
       original_name: "Timothée Chalamet",
       popularity: 112.04,
       profile_path: "/BE2sdjpgsa2rNTFa66f7upkaOP.jpg",
+      biography:"Timothée Chalamet is an American actor known for his breakout role in Call Me by Your Name (2017), for which he received an Academy Award nomination. He has since starred in a series of critically acclaimed films, including Lady Bird (2017), Little Women (2019), and Dune (2021). With his undeniable charm and impressive range, Chalamet has become one of Hollywood’s brightest young stars, quickly earning both commercial success and critical acclaim. He is regarded for his ability to take on complex roles and is considered one of the most talented actors of his generation.",
       known_for: [
         {
           adult: false,
@@ -800,6 +812,7 @@ const actors = [
       original_name: "Sangeeth Shobhan",
       popularity: 104.233,
       profile_path: "/7Vox31bH7XmgPNJzMKGa4uGyjW8.jpg",
+      biography:"Sangeeth Shobhan is an emerging actor in the Indian film industry. Known for his work in Telugu cinema, Sangeeth has gained attention for his strong performances in regional films. Although relatively new to the industry, his roles in various projects have demonstrated his versatility and promise as an actor. As a rising star, he is poised to make a larger impact on the Indian film scene in the coming years.",
       known_for: [
         {
           adult: false,
@@ -866,6 +879,7 @@ const actors = [
       original_name: "Farrah Mackenzie",
       popularity: 104.068,
       profile_path: "/6IOdWe5J3AsPVomDTcVDUcY1c6z.jpg",
+      biography:"Farrah Mackenzie is a talented American actress known for her roles in both television and film. With a natural ability to portray both dramatic and lighthearted characters, she has quickly made a name for herself in Hollywood. Mackenzie is particularly known for her roles in family-oriented films and television shows. Though still early in her career, she has gained attention for her performances and has the potential to become one of the rising stars in the industry.",
       known_for: [
         {
           adult: false,
@@ -932,6 +946,7 @@ const actors = [
       original_name: "Ana de Armas",
       popularity: 98.27,
       profile_path: "/3vxvsmYLTf4jnr163SUlBIw51ee.jpg",
+      biography:"Ana de Armas is a Cuban-Spanish actress who has garnered international recognition for her roles in both Spanish and Hollywood films. She first gained widespread fame for her performance in Blade Runner 2049 (2017) and has since starred in Knives Out (2019), No Time to Die (2021), and Deep Water (2022). Known for her stunning beauty and impressive acting range, Ana has become one of the most sought-after actresses of her generation. Her breakout role in Knives Out earned her a Golden Globe nomination, further cementing her place in Hollywood.",
       known_for: [
         {
           adult: false,
@@ -998,6 +1013,7 @@ const actors = [
       original_name: "Mahershala Ali",
       popularity: 97.383,
       profile_path: "/9ZmSejm5lnUVY5IJ1iNx2QEjnHb.jpg",
+      biography:"Mahershala Ali is an American actor best known for his captivating performances in film and television. He won two Academy Awards for Best Supporting Actor for his roles in Moonlight (2016) and Green Book (2018). Ali’s career spans across multiple genres, from drama to action, and he is widely recognized for his depth and emotional range. His other notable works include House of Cards and True Detective. Ali is also set to play the role of Blade in the Marvel Cinematic Universe, continuing his rise as one of the most respected actors in the industry. ",
       known_for: [
         {
           adult: false,
@@ -1064,6 +1080,7 @@ const actors = [
       original_name: "Gary Oldman",
       popularity: 93.895,
       profile_path: "/hHP0769L7YrApkMKCOyb9cwgxBW.jpg",
+      biography:"Gary Oldman is an acclaimed English actor whose career has spanned several decades. Known for his transformative performances, Oldman has appeared in a wide variety of roles, ranging from villains to complex, dramatic characters. He is best known for his performances in The Dark Knight trilogy, Tinker Tailor Soldier Spy (2011), and Darkest Hour (2017), where he won an Academy Award for Best Actor. With his ability to disappear into roles, Oldman is considered one of the most versatile and skilled actors in modern cinema.",
       known_for: [
         {
           adult: false,
@@ -1130,6 +1147,7 @@ const actors = [
       original_name: "Rowoon",
       popularity: 88.478,
       profile_path: "/sOTYcl8SGmtxpWq0EQKJhX8dztr.jpg",
+      biography:"Rowoon, a South Korean actor and singer, is best known for his work with the popular K-pop group SF9 and for his performances in Korean dramas. He has gained widespread popularity for his lead roles in She Would Never Know (2021) and The King’s Affection (2021), showcasing his acting skills and charm. Rowoon’s natural ability to connect with audiences, combined with his strong performances in both romantic and historical genres, has made him one of the rising stars in the K-drama world.",
       known_for: [
         {
           adult: false,
@@ -1196,6 +1214,7 @@ const actors = [
       original_name: "Alyson Gorske",
       popularity: 87.946,
       profile_path: "/aqohlkcnI9yZdRmgDWjipCncmh8.jpg",
+      biography:"Alyson Gorske is an emerging actress who has been gaining recognition for her work in both television and film. Known for her versatility, Alyson has showcased her talents in a variety of genres, from drama to comedy. Although still early in her career, she is considered a rising star in the entertainment industry, with many seeing her as a future leading lady. Her charisma and strong screen presence have already made her a fan favorite.",
       known_for: [
         {
           adult: false,
@@ -1262,6 +1281,7 @@ const actors = [
       original_name: "Morgan Freeman",
       popularity: 86.397,
       profile_path: "/jPsLqiYGSofU4s6BjrxnefMfabb.jpg",
+      biography:"Morgan Freeman is an iconic American actor and narrator with a career spanning over six decades. Known for his deep, soothing voice and commanding screen presence, Freeman has starred in numerous films, including The Shawshank Redemption (1994), Million Dollar Baby (2004), and Driving Miss Daisy (1989), for which he won an Academy Award for Best Supporting Actor. He is also known for his work as a narrator, with his voice being a signature in many documentaries and films. Freeman's career is a testament to his talent and enduring influence in Hollywood.",
       known_for: [
         {
           adult: false,
