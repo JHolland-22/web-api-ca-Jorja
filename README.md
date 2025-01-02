@@ -17,7 +17,7 @@ A bullet-point list of the ADDITIONAL features you have implemented in the API *
 + npm install dotenv
 + in react-app npm start
 + in movie-api npm run dev
-+ 
+  
 ## API Configuration
 + use the .env file and add it to both react-app and movies-api 
 ______________________
