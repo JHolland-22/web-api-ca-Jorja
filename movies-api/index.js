@@ -9,7 +9,7 @@ import authenticate from './authenticate';
 import genresRouter from './api/genres';
 import upcomingRouter from './api/upcomingMovies';
 import router from './api/actors';
-
+import userDetailsRouter from "./api/userFandW"
 dotenv.config();
 
 
@@ -19,6 +19,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use('/api/users', usersRouter);
+app.use('/api/userDetails', userDetailsRouter);
 app.use('/api/movies', moviesRouter);
 app.use('/api/movies', authenticate, moviesRouter);
 app.use('/api/genres', genresRouter);

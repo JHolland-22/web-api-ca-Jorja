@@ -1,5 +1,5 @@
 import React, { useState, createContext } from "react";
-import { login, signup } from "../api/tmdb-api";
+import { login, getUserDetails,removeMovie,addMovie,signup } from "../api/tmdb-api";
 
 export const AuthContext = createContext(null);
 
@@ -10,6 +10,8 @@ const AuthContextProvider = (props) => {
   const [userName, setUserName] = useState("");
   const [loginErr, setLoginErr] = useState(null);
   const [authErr, setAuthErr] = useState(null);
+  const [favourites, setFavourites] = useState();
+  const [watchlist, setWatchlist] = useState();
 
   const setToken = (data) => {
     localStorage.setItem("token", data);
@@ -22,6 +24,9 @@ const AuthContextProvider = (props) => {
       setToken(result.token);
       setIsAuthenticated(true);
       setUserName(username);
+      const userDetails = await getUserDetails(username);
+      setFavourites(userDetails.favourites);
+      setWatchlist(userDetails.watchlist);
     } else {
       setLoginErr(result.msg);
     }
@@ -45,6 +50,34 @@ const AuthContextProvider = (props) => {
     localStorage.removeItem("token");
   };
 
+    const addToFavourites = async (movieid) => {
+    const response = await addMovie(userName, movieid, "favourites");
+    console.log(response);
+    setFavourites(prev => [...favourites, movieid]);
+    return (response.code === 200) ? true : false;
+  }
+
+  const removeFromFavourites = async (movieid) => {
+    const response = await removeMovie(userName, movieid, "favourites");
+    console.log(response);
+    setFavourites(prev => prev.filter(id => id !== movieid));
+    return (response.code === 200) ? true : false;
+  }
+
+  const addToWatchlist = async (movieid) => {
+    const response = await addMovie(userName, movieid, "watchlist");
+    console.log(response);
+    setWatchlist(prev => [...watchlist, movieid]);
+    return (response.code === 200) ? true : false;
+  }
+
+  const removeFromWatchlist = async (movieid) => {
+    const response = await removeMovie(userName, movieid, "watchlist");
+    console.log(response);
+    setWatchlist(prev => prev.filter(id => id !== movieid));
+    return (response.code === 200) ? true : false;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -55,7 +88,13 @@ const AuthContextProvider = (props) => {
         userName,
         authErr,
         loginErr,
-        authToken
+        authToken,
+        addToFavourites,
+        removeFromFavourites,
+        addToWatchlist,
+        removeFromWatchlist,
+        favourites,
+        watchlist
       }}
     >
       {props.children}

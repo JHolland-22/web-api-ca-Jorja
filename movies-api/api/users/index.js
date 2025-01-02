@@ -2,10 +2,10 @@ import express from 'express';
 import User from './userModel';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
-import mongoose from 'mongoose';
 
-const router = express.Router();
+const router = express.Router(); // eslint-disable-line
 
+// Get all users
 router.get('/', async (req, res) => {
     try {
         const users = await User.find();
@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+// register(Create)/Authenticate User
 router.post('/', asyncHandler(async (req, res) => {
     try {
         if (!req.body.username || !req.body.password) {
@@ -26,10 +27,13 @@ router.post('/', asyncHandler(async (req, res) => {
             await authenticateUser(req, res);
         }
     } catch (error) {
+        // Log the error and return a generic error message
+        console.error(error);
         res.status(500).json({ success: false, msg: 'Internal server error.' });
     }
 }));
 
+// Update a user
 router.put('/:id', async (req, res) => {
     try {
         if (req.body._id) delete req.body._id;
@@ -44,9 +48,8 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-
-
 async function registerUser(req, res) {
+    // Add input validation logic here
     await User.create(req.body);
     res.status(201).json({ success: true, msg: 'User successfully created.' });
 }
@@ -59,7 +62,7 @@ async function authenticateUser(req, res) {
 
     const isMatch = await user.comparePassword(req.body.password);
     if (isMatch) {
-        const token = jwt.sign({ username: user.username, _id: user._id }, process.env.SECRET);
+        const token = jwt.sign({ username: user.username }, process.env.SECRET);
         res.status(200).json({ success: true, token: 'BEARER ' + token });
     } else {
         res.status(401).json({ success: false, msg: 'Wrong password.' });

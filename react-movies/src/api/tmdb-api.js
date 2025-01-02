@@ -300,3 +300,35 @@ export const signup = async (username, password) => {
   const data = await response.json();
   return data;
 };
+
+export const getUserDetails = async (username) => {
+  const response = await fetch(`http://localhost:8080/api/userDetails/${username}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'get'
+  });
+  return response.json();
+}
+
+export const addMovie = async (username, movieid, listName) => {
+  const response = await fetch(`http://localhost:8080/api/userDetails/${username}/add`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'put',
+    body: JSON.stringify({ id: movieid, array: listName  })
+  });
+  return response.json();
+};
+
+export const removeMovie = async (username, movieid, listName) => {
+  const response = await fetch(`http://localhost:8080/api/userDetails/${username}/rem`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'put',
+    body: JSON.stringify({ id: movieid, array: listName})
+  });
+  return response.json()
+};
