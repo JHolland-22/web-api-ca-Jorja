@@ -13,14 +13,13 @@ A bullet-point list of the ADDITIONAL features you have implemented in the API *
 
 ## Setup requirements.
 
-[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.]
-
-## API Configuration
-+ use the .env file and add it to both react-app and movies-api 
 + npm install
 + npm install dotenv
 + in react-app npm start
 + in movie-api npm run dev
++ 
+## API Configuration
++ use the .env file and add it to both react-app and movies-api 
 ______________________
 NODE_ENV=development
 PORT=8080
@@ -31,7 +30,6 @@ SECRET=<your_secretkey>
 ______________________
 
 ## API Design
-Give an overview of your web API design, perhaps similar to the following: 
 api
 
 - /api/movies | GET | Gets a list of movies 
