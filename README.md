@@ -4,7 +4,7 @@ Name: Jorja Holland
 
 ## Features.
 
-A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** (or modifications to existing features)
+A bullet-point list of the ADDITIONAL features implemented in the API **THAT WERE NOT IN THE LABS** (or modifications to existing features)
  
  + Upcoming movies
  + Top rated movies
@@ -49,13 +49,13 @@ tmdb
 ## Security and Authentication
 
 I used JWT tokens when accessing the TMDB API  
-must provide a bearer token 
-application will get the token from stortage
-the discover movies page is not protected but all the other pages are and it redirects you to login
+Must provide a bearer token 
+Application will get the token from stortage
+The discover movies page is not protected but all the other pages are and it redirects you to login
 
 
 ## Integrating with React App
-made slight changes to the react app to make my api work with it 
-changes the pages mainly 
-didnt make many changes to the components
+Made slight changes to the react app to make my api work with it 
+Changes the pages mainly 
+Made a couple changes to components (in efforts to make things work mostly reverted back to the orginal)
 
